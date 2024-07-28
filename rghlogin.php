@@ -1,44 +1,47 @@
 <?php
+session_start();
 require 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
     $email = $_POST['email'];
-    // $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $password = $_POST['password'];
-
 
     $conn = get_db_connection();
 
-    $stmt = $conn->prepare("INSERT INTO wishers (name, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $email, $password);
+    $stmt = $conn->prepare("SELECT id, password FROM wishers WHERE email = ?");
+    $stmt->bind_param("s", $email);
     $stmt->execute();
+    $stmt->bind_result($id, $hashed_password);
+    $stmt->fetch();
+
+    if (password_verify($password, $hashed_password)) {
+        $_SESSION['user_id'] = $id;
+        header("Location: editWishList.php");
+        exit();
+    } else {
+        echo "Invalid email or password";
+    }
+
     $stmt->close();
     $conn->close();
-
-    header("Location: login.php");
-    exit();
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Login</title>
 </head>
 <body>
-<h1>Register</h1>
-<form method="post" action="createNewWisher.php">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
-    <br>
+<h1>Login</h1>
+<form method="post" action="login.php">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required>
     <br>
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
     <br>
-    <button type="submit">Register</button>
+    <button type="submit">Login</button>
 </form>
 </body>
 </html>

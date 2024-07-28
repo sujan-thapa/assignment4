@@ -6,8 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['login'])) {
         $email = $_POST['email'];
         $password = $_POST['password'];
-        // echo $password;
-        // echo "vg\n";
+        echo $password;
+        echo "vg\n";
 
         $conn = get_db_connection();
 
@@ -29,12 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $row = $result->fetch_assoc();
             $id = $row['id'];
             $pass = $row['password'];
-            // echo $pass;
-            // echo "sijj";
-            // echo $row['password'];
+            echo $pass;
+            echo "sijj";
+            echo $row['password'];
             // $hashed_password = $row['password'];
             if ($password == $pass) {
-                $_SESSION['user_id'] = $id;
                 header("Location: editWishList.php");
                 // header("Location: login.php");
 

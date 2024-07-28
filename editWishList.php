@@ -11,7 +11,7 @@ $user_id = $_SESSION['user_id'];
 $conn = get_db_connection();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $item = $_POST['item'];
+    $item = $_POST['item']; 
 
     if ($_POST['action'] == 'add') {
         $stmt = $conn->prepare("INSERT INTO wish_list (user_id, item) VALUES (?, ?)");
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("sii", $item, $item_id, $user_id);
     } elseif ($_POST['action'] == 'delete') {
         $item_id = $_POST['item_id'];
-        $stmt = $conn->prepare("DELETE FROM wish_list WHERE id = ? AND user_id = ?");
+        $stmt = $conn->prepare("DELETE FROM wish_list WHERE id = ? AND user_id = ?");   
         $stmt->bind_param("ii", $item_id, $user_id);
     }
 
@@ -44,6 +44,8 @@ $conn->close();
 <form method="post" action="editWishList.php">
     <input type="hidden" name="action" value="add">
     <input type="text" name="item" required>
+    <!-- <input type="number" name="number" required> -->
+
     <button type="submit">Add Item</button>
 </form>
 <ul>
