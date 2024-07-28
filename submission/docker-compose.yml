@@ -1,0 +1,21 @@
+version: "2"
+services:
+  webserver:
+    image: assignment4
+    ports:
+      - "80:80"
+    #   - "443:443"
+    # volumes:
+    #   - ./app:/var/www/html
+    environment:
+      MYSQL_DB_CONNECTION: test
+      MYSQL_DB_NAME: wish_list
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
+      SITE_URL: http://localhost
+    networks:
+      - test
+
+networks:
+  test:
+    external: true
