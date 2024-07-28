@@ -1,26 +1,21 @@
-version: '3.8'
-
+version: "2"
 services:
-  web:
-    image: my-wishlist-app
-    build: .
+  webserver:
+    image: assignment4
     ports:
-      - "8080:80"
-    depends_on:
-      - db
+      - "80:80"
+    #   - "443:443"
+    # volumes:
+    #   - ./app:/var/www/html
     environment:
-      MYSQL_HOST: db
+      MYSQL_DB_CONNECTION: test
+      MYSQL_DB_NAME: wish_list
       MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_DATABASE: wishlist
-  db:
-    image: mysql:5.7
-    volumes:
-      - db-data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    environment:
-      MYSQL_ROOT_PASSWORD: 4941
-      MYSQL_DATABASE: wishlist
+      MYSQL_PASSWORD: 
+      SITE_URL: http://localhost
+    networks:
+      - test
 
-volumes:
-  db-data:
+networks:
+  test:
+    external: true
